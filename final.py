@@ -603,7 +603,6 @@ elif selected_page == "Analysis":
                 value=""
             )
 
-
             # Process additional tickers
             user_tickers = [ticker.strip().upper() for ticker in additional_tickers.split(",") if ticker.strip()]
             comparison_tickers = [default_ticker] + user_tickers
@@ -642,8 +641,8 @@ elif selected_page == "Analysis":
                         currency = stock_info.get("currency", 'USD')  # Default to USD if not provided
                         currencies[ticker] = currency
                         
-                        comparison_data.append([
-                            ticker,
+                        comparison_data.append([ 
+                            ticker, 
                             stock_info.get("trailingPE", "N/A"),
                             f"{dividend_yield:.2f}%" if dividend_yield else "N/A",
                             f"{market_cap / 1e9:.2f} B" if market_cap != "N/A" else "N/A",  # Convert market cap to billions
@@ -667,13 +666,6 @@ elif selected_page == "Analysis":
 
                 with st.expander("Key Metrics Comparison"):
                     st.dataframe(df_comparison, use_container_width=True)
-                                                        # Download Comparison Data
-                    st.download_button(
-                        label="Download Comparison Data",
-                        data=df_comparison.to_csv(index=False),
-                        file_name="comparison_data.csv",
-                        mime="text/csv"
-                    )
 
                 # Sector and Industry Information
                 df_sector_industry = pd.DataFrame(sector_industry_data, columns=["Ticker", "Sector", "Industry"])
@@ -708,14 +700,6 @@ elif selected_page == "Analysis":
                         hovermode='x unified'
                     )
                     st.plotly_chart(fig_close)
-                    img_close = save_plotly_figure_as_image(fig_close, "comparative_closing_prices.png")
-                    st.download_button(
-                        label="Download Comparative Closing Prices Chart",
-                        data=img_close,
-                        file_name="comparative_closing_prices.png",
-                        mime="image/png"
-                    )
-                    st.markdown("**Note:** All closing prices are displayed in USD.")
 
                     # Plot moving averages
                     fig_moving_avg = go.Figure()
@@ -731,13 +715,6 @@ elif selected_page == "Analysis":
                         hovermode='x unified'
                     )
                     st.plotly_chart(fig_moving_avg)
-                    img_moving_avg = save_plotly_figure_as_image(fig_moving_avg, "moving_averages.png")
-                    st.download_button(
-                        label="Download Moving Averages Chart",
-                        data=img_moving_avg,
-                        file_name="moving_averages.png",
-                        mime="image/png"
-                    )
 
                     # Plot cumulative returns
                     fig_cumulative_returns = go.Figure()
@@ -753,13 +730,6 @@ elif selected_page == "Analysis":
                         hovermode='x unified'
                     )
                     st.plotly_chart(fig_cumulative_returns)
-                    img_cumulative_returns = save_plotly_figure_as_image(fig_cumulative_returns, "cumulative_returns.png")
-                    st.download_button(
-                        label="Download Cumulative Returns Chart",
-                        data=img_cumulative_returns,
-                        file_name="cumulative_returns.png",
-                        mime="image/png"
-                    )
 
                     # Plot market capitalization comparison
                     fig_market_cap = go.Figure()
@@ -768,37 +738,16 @@ elif selected_page == "Analysis":
                     
                     fig_market_cap.update_layout(title='Market Capitalization Comparison', xaxis_title='Ticker', yaxis_title='Market Cap (in Billion USD)')
                     st.plotly_chart(fig_market_cap)
-                    img_market_cap = save_plotly_figure_as_image(fig_market_cap, "market_cap_comparison.png")
-                    st.download_button(
-                        label="Download Market Capitalization Chart",
-                        data=img_market_cap,
-                        file_name="market_cap_comparison.png",
-                        mime="image/png"
-                    )
 
                     # Pie chart for Market Cap distribution
                     fig_pie = go.Figure(data=[go.Pie(labels=comparison_tickers, values=market_caps)])
                     fig_pie.update_layout(title='Market Cap Distribution')
                     st.plotly_chart(fig_pie)
-                    img_pie = save_plotly_figure_as_image(fig_pie, "market_cap_distribution.png")
-                    st.download_button(
-                        label="Download Market Cap Distribution Chart",
-                        data=img_pie,
-                        file_name="market_cap_distribution.png",
-                        mime="image/png"
-                    )
 
                     # Bar chart for Dividend Yield
                     fig_dividend_yield = go.Figure(data=[go.Bar(x=comparison_tickers, y=dividend_yields)])
                     fig_dividend_yield.update_layout(title='Dividend Yield Comparison', xaxis_title='Ticker', yaxis_title='Dividend Yield (%)')
                     st.plotly_chart(fig_dividend_yield)
-                    img_dividend_yield = save_plotly_figure_as_image(fig_dividend_yield, "dividend_yield_comparison.png")
-                    st.download_button(
-                        label="Download Dividend Yield Chart",
-                        data=img_dividend_yield,
-                        file_name="dividend_yield_comparison.png",
-                        mime="image/png"
-                    )
 
                     # Volatility Comparison
                     volatility = {}
@@ -809,14 +758,6 @@ elif selected_page == "Analysis":
                     fig_volatility = go.Figure(data=[go.Bar(x=list(volatility.keys()), y=list(volatility.values()))])
                     fig_volatility.update_layout(title='Volatility Comparison', xaxis_title='Ticker', yaxis_title='Volatility (Std Dev)')
                     st.plotly_chart(fig_volatility)
-                    img_volatility = save_plotly_figure_as_image(fig_volatility, "volatility_comparison.png")
-                    st.download_button(
-                        label="Download Volatility Comparison Chart",
-                        data=img_volatility,
-                        file_name="volatility_comparison.png",
-                        mime="image/png"
-                    )
-
 
             else:
                 st.write("Please enter at least one stock ticker to compare.")
