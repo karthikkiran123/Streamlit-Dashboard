@@ -1,0 +1,10 @@
+yfinance
+streamlit
+numpy
+pandas
+plotly
+newsapi-python
+vaderSentiment
+requests
+prophet
+streamlit-option-menu
